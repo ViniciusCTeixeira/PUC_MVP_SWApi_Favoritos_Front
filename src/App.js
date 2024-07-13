@@ -3,7 +3,7 @@ import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import Home from './pages/Home';
-import About from './pages/About';
+import People from './pages/People';
 import {Container} from "@mui/material";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
                 <Container maxWidth="xxl" sx={{marginTop: '30px'}}>
                     <Routes>
                         <Route path="/" element={<Home />}/>
-                        <Route path="/about" element={<About />}/>
+                        <Route path="/people" element={<People />}/>
                     </Routes>
                 </Container>
             </div>

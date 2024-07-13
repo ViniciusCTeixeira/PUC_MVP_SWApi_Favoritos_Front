@@ -13,8 +13,8 @@ const Navbar = () => {
                     </Link>
                 </Typography>
                 <Typography variant="h6" style={{ marginLeft: '15px' }}>
-                    <Link to="/about" style={{ color: 'white', textDecoration: 'none' }}>
-                        About
+                    <Link to="/people" style={{ color: 'white', textDecoration: 'none' }}>
+                        Personagens
                     </Link>
                 </Typography>
             </Toolbar>

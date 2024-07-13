@@ -2,16 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {Button, Card, CardContent, Typography} from '@mui/material';
 import axios from 'axios';
 
-const Home = () => {
+const People = () => {
     const [loading, setLoading] = useState(true);
     const [favorites, setFavorites] = useState([]);
-    const [films, setFilms] = useState([]);
+    const [people, setPeople] = useState([]);
     const username = 'vinicius';
 
     useEffect(() => {
         fetchFavorites().then(r => {
-            fetchFilms().then(rr => {
-                setFilms(tool(r, rr))
+            fetchPeople().then(rr => {
+                setPeople(tool(r, rr))
                 setLoading(false);
             });
             setFavorites(r.data)
@@ -22,19 +22,19 @@ const Home = () => {
         let filmsWithFavoriteStatus = [];
 
         if (r.data && rr.data.results) {
-            filmsWithFavoriteStatus = rr.data.results.map(film => {
-                const filmId = film.url.split('/').filter(Boolean).slice(-1)[0];
+            filmsWithFavoriteStatus = rr.data.results.map(p => {
+                const filmId = p.url.split('/').filter(Boolean).slice(-1)[0];
                 const favoriteItem = r.data.find(item => item.swapi_id === filmId);
 
                 return {
-                    ...film,
+                    ...p,
                     isFavorite: !!favoriteItem,
                     api_id: favoriteItem ? favoriteItem.id : null
                 };
             });
         } else {
-            filmsWithFavoriteStatus = rr.data.results.map(film => ({
-                ...film,
+            filmsWithFavoriteStatus = rr.data.results.map(p => ({
+                ...p,
                 isFavorite: false,
                 api_id: null
             }));
@@ -45,16 +45,16 @@ const Home = () => {
 
     const fetchFavorites = async () => {
         try {
-            return await axios.get(`http://localhost:5000/favorites/films/${username}`);
+            return await axios.get(`http://localhost:5000/favorites/people/${username}`);
         } catch (error) {
             console.error('Erro ao buscar favoritos:', error);
             return [];
         }
     };
 
-    const fetchFilms = async () => {
+    const fetchPeople = async () => {
         try {
-            return await axios.get(`https://swapi.dev/api/films/`);
+            return await axios.get(`https://swapi.dev/api/people/`);
         } catch (error) {
             console.error('Erro ao buscar favoritos:', error);
             return []
@@ -82,7 +82,7 @@ const Home = () => {
             username: username,
             description: 'Descrição do favorito',
             swapi_id: `${id}`,
-            type: 'films'
+            type: 'people'
         };
 
         try {
@@ -100,12 +100,11 @@ const Home = () => {
             {loading ? (
                 <Typography variant="h5">Carregando...</Typography>
             ) : (
-                films.map((film) => (
+                people.map((film) => (
                     <Card sx={{ maxWidth: 400 }}>
                         <CardContent key={film.id}>
-                            <Typography variant="h5">{film.title}</Typography>
-                            <Typography variant="body1">{film.release_date}</Typography>
-                            <Typography variant="body1">{film.director}</Typography>
+                            <Typography variant="h5">{film.name}</Typography>
+                            <Typography variant="body1">{film.gender}</Typography>
                             {film.isFavorite ? (
                                 <Button variant="contained" color="error" onClick={() => removeFromFavorites(film.api_id)}>Remover dos favoritos</Button>
                             ) : (
@@ -119,4 +118,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default People;
